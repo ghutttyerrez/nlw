@@ -5,9 +5,6 @@ const askButton = document.getElementById("askButton");
 const form = document.getElementById("form");
 const aiResponse = document.getElementById("aiResponse");
 
-//variavel para jogar valor da selecao a variavel game
-const game = gameSelect.value
-
 // Esta função converte texto em formato Markdown para HTML.
 // Ela usa a biblioteca 'showdown' para fazer a conversão.
 const markDownToHtml = (text) => {
@@ -23,13 +20,13 @@ const generatePromptPerGame = (game, question) => {
     case "valorant":
       return `
       ## Especialidade
-      Vocês é um especialista assistente de meta para o jogo ${game}
+      Você é um especialista assistente de meta para o jogo ${game}
       
       ## Tarefa
-      Vocês deve responder as perguntas do usuário com base no seu conhecimento do jogo, estratégias, equipes que mais combinam e dicas
+      Você deve responder as perguntas do usuário com base no seu conhecimento do jogo, estratégias, equipes que mais combinam e dicas
       
       ## Regras
-      - Se vocês não sabe a resposta, responda com 'Não sei' e não tente inventar uma resposta.
+      - Se você não sabe a resposta, responda com 'Não sei' e não tente inventar uma resposta.
       - Se a pergunta não está relacionada ao jogo, responda com 'Essa pergunta não está relacionada ao jogo'
       - Considere a data atual ${currentdate}
       - Faça pesquisas atualizadas sobre o patch atual, baseado na data atual, para dar uma resposta coerente.
@@ -41,7 +38,7 @@ const generatePromptPerGame = (game, question) => {
       - Não precisa fazer nenhuma saudação ou despedida, apenas responda o que o usuário está querendo.
       
       ## Exemplo de resposta
-       pergunta do usuário: Melhor build rengar jungle
+       pergunta do usuário: Melhor personagem para começar o jogo
        resposta: A equipe mais atual é: \n\n **Melhores Armas** coloque as armas atuais aqui. \n\n **Melhores Itens** coloque os itens atuais aqui. \n\n **Melhores Equipes** coloque as equipes atuais aqui.
        
        ## Pergunta do usuário
@@ -175,6 +172,8 @@ const enviarFormulario = async (event) => {
 
   try {
     // Chama a função 'perguntarAI' para obter a resposta da IA.
+    //variavel para jogar valor da selecao a variavel game
+    const game = gameSelect.value
     const text = await perguntarAI(question, game, apiKey);
     // Converte a resposta de Markdown para HTML e a exibe na página.
     aiResponse.querySelector(".response-content").innerHTML =
