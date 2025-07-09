@@ -1,3 +1,5 @@
+"use strict";
+
 const apiKeyInput = document.getElementById("apiKey");
 const gameSelect = document.getElementById("game-select");
 const questionInput = document.getElementById("questionInput");
@@ -72,7 +74,7 @@ const generatePromptPerGame = (game, question) => {
       ---
       Aqui está a pergunta do usuário: ${question}`;
 
-    case "CS:GO":
+    case "cs":
       return `
         ## Especialidade
       Vocês é um especialista assistente de meta para o jogo ${game}
@@ -156,7 +158,7 @@ const perguntarAI = async (question, game, apiKey) => {
 const enviarFormulario = async (event) => {
   event.preventDefault();
   const apiKey = apiKeyInput.value;
-  const game = gameSelect.value.trim().toLowerCase()
+  const game = gameSelect.value.trim().toLowerCase();
   const question = questionInput.value;
 
   // Verifica se todos os campos foram preenchidos.
