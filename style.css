@@ -164,10 +164,10 @@ form {
   .loading {
     animation: pulse 1s infinite;
   }
+}
 
-  .hidden {
-    display: none;
-  }
+.hidden {
+  display: none;
 }
 
 @keyframes pulse {
