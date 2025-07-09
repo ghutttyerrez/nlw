@@ -156,7 +156,7 @@ const perguntarAI = async (question, game, apiKey) => {
 const enviarFormulario = async (event) => {
   event.preventDefault();
   const apiKey = apiKeyInput.value;
-  const game = gameSelect.value;
+  const game = gameSelect.value.trim().toLowerCase()
   const question = questionInput.value;
 
   // Verifica se todos os campos foram preenchidos.
@@ -173,7 +173,6 @@ const enviarFormulario = async (event) => {
   try {
     // Chama a função 'perguntarAI' para obter a resposta da IA.
     //variavel para jogar valor da selecao a variavel game
-    const game = gameSelect.value
     const text = await perguntarAI(question, game, apiKey);
     // Converte a resposta de Markdown para HTML e a exibe na página.
     aiResponse.querySelector(".response-content").innerHTML =
