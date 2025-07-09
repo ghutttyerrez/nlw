@@ -5,6 +5,9 @@ const askButton = document.getElementById("askButton");
 const form = document.getElementById("form");
 const aiResponse = document.getElementById("aiResponse");
 
+//variavel para jogar valor da selecao a variavel game
+const game = gameSelect.value
+
 // Esta função converte texto em formato Markdown para HTML.
 // Ela usa a biblioteca 'showdown' para fazer a conversão.
 const markDownToHtml = (text) => {
@@ -17,10 +20,10 @@ const generatePromptPerGame = (game, question) => {
   const currentdate = new Date().toLocaleDateString();
 
   switch (game.toLowerCase) {
-    case "Valorant":
+    case "valorant":
       return `
       ## Especialidade
-      Vocês é um especialista assistente de meta para o jogo Valorant
+      Vocês é um especialista assistente de meta para o jogo ${game}
       
       ## Tarefa
       Vocês deve responder as perguntas do usuário com base no seu conhecimento do jogo, estratégias, equipes que mais combinam e dicas
