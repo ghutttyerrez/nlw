@@ -17,7 +17,7 @@ const generatePromptPerGame = (game, question) => {
   const currentdate = new Date().toLocaleDateString();
 
   switch (game.toLowerCase) {
-    case "valorant":
+    case querySelector(gameSelect):
       return `
       ## Especialidade
       Vocês é um especialista assistente de meta para o jogo Valorant
@@ -45,7 +45,7 @@ const generatePromptPerGame = (game, question) => {
        ${question}
        `;
 
-    case "lol":
+    case querySelector(gameSelect):
       return `
         ## Especialidade
       Você é um especialista assistente de meta para o jogo ${game}
@@ -72,7 +72,7 @@ const generatePromptPerGame = (game, question) => {
       ---
       Aqui está a pergunta do usuário: ${question}`;
 
-    case "cs":
+    case querySelector(gameSelect):
       return `
         ## Especialidade
       Vocês é um especialista assistente de meta para o jogo ${game}
