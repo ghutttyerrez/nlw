@@ -12,38 +12,110 @@ const markDownToHtml = (text) => {
   return convert.makeHtml(text);
 };
 
+//criei uma função que gera o prompt baseado no jogo escolhido
+const generatePromptPerGame = (game, question) => {
+  const currentdate = new Date().toLocaleDateString();
+
+  switch (game.toLowerCase) {
+    case "valorant":
+      return `
+      ## Especialidade
+      Vocês é um especialista assistente de meta para o jogo Valorant
+      
+      ## Tarefa
+      Vocês deve responder as perguntas do usuário com base no seu conhecimento do jogo, estratégias, equipes que mais combinam e dicas
+      
+      ## Regras
+      - Se vocês não sabe a resposta, responda com 'Não sei' e não tente inventar uma resposta.
+      - Se a pergunta não está relacionada ao jogo, responda com 'Essa pergunta não está relacionada ao jogo'
+      - Considere a data atual ${currentdate}
+      - Faça pesquisas atualizadas sobre o patch atual, baseado na data atual, para dar uma resposta coerente.
+      - Nunca responda itens ou equipes que vocês não tenha certeza de que existe no patch atual.
+      
+      ## Resposta
+      - Economize na resposta, seja direto e responda no maximo 500 caracteres
+      - Responda em markdown
+      - Não precisa fazer nenhuma saudação ou despedida, apenas responda o que o usuário está querendo.
+      
+      ## Exemplo de resposta
+       pergunta do usuário: Melhor build rengar jungle
+       resposta: A equipe mais atual é: \n\n **Melhores Armas** coloque as armas atuais aqui. \n\n **Melhores Itens** coloque os itens atuais aqui. \n\n **Melhores Equipes** coloque as equipes atuais aqui.
+       
+       ## Pergunta do usuário
+       ${question}
+       `;
+
+    case "lol":
+      return `
+        ## Especialidade
+      Você é um especialista assistente de meta para o jogo ${game}
+
+      ## Tarefa
+      Você deve responder as perguntas do usuário com base no seu conhecimento do jogo, estratégias, build e dicas
+
+      ## Regras
+      - Se você não sabe a resposta, responda com 'Não sei' e não tente inventar uma resposta.
+      - Se a pergunta não está relacionada ao jogo, responda com 'Essa pergunta não está relacionada ao jogo'
+      - Considere a data atual ${new Date().toLocaleDateString()}
+      - Faça pesquisas atualizadas sobre o patch atual, baseado na data atual, para dar uma resposta coerente.
+      - Nunca responda itens que vc não tenha certeza de que existe no patch atual.
+
+      ## Resposta
+      - Economize na resposta, seja direto e responda no máximo 500 caracteres
+      - Responda em markdown
+      - Não precisa fazer nenhuma saudação ou despedida, apenas responda o que o usuário está querendo.
+
+      ## Exemplo de resposta
+      pergunta do usuário: Melhor equipe para iniciar no valorant
+      resposta: A build mais atual é: \n\n **Itens:**\n\n coloque os itens aqui.\n\n**Runas:**\n\nexemplo de runas\n\n
+
+      ---
+      Aqui está a pergunta do usuário: ${question}`;
+
+    case "cs":
+      return `
+        ## Especialidade
+      Vocês é um especialista assistente de meta para o jogo ${game}
+
+      ## Tarefa
+      Vocês deve responder as perguntas do usuário com base no seu conhecimento do jogo, estratégias, armas e dicas
+
+      ## Regras
+      - Se vocês não sabe a resposta, responda com 'Não sei' e não tente inventar uma resposta.
+      - Se a pergunta não está relacionada ao jogo, responda com 'Essa pergunta não está relacionada ao jogo'
+      - Considere a data atual ${new Date().toLocaleDateString()}
+      - Faça pesquisas atualizadas sobre o patch atual, baseado na data atual, para dar uma resposta coerente.
+      - Nunca responda itens que vocês não tenha certeza de que existe no patch atual.
+
+      ## Resposta
+      - Economize na resposta, seja direto e responda no.maxcdn 500 caracteres
+      - Responda em markdown
+      - Não precisa fazer nenhuma saudação ou despedida, apenas responda o que o usuário está querendo.
+
+      ## Exemplo de resposta
+      pergunta do usuário: Melhores arma e mapas para comecar no CS:GO
+      resposta: A arma mais usada é: \n\n **Armas:**\n\n coloque as armas aqui.\n\n**Mapas:**\n\ncoloque os mapas aqui\n\n
+      
+      ---
+      Aqui está a pergunta do usuário: ${question}`;
+
+    default:
+      return `
+        ## pergunta do usuario
+        ${question}
+        
+        (Este jogo nao foi identificado, por favor, selecione um jogo valido)`;
+  }
+};
+
 8; // Esta é uma função assíncrona que envia a pergunta do usuário para a API do Gemini.
 const perguntarAI = async (question, game, apiKey) => {
   const model = "gemini-2.0-flash";
   const geminiURL = `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${apiKey}`;
 
-  // Cria o prompt que será enviado para a IA.
-  // Ele inclui instruções sobre como a IA deve se comportar e a pergunta do usuário.
-  const pergunta = `
-    ## Especialidade
-    Você é um especialista assistente de meta para o jogo ${game}
-
-    ## Tarefa
-    Você deve responder as perguntas do usuário com base no seu conhecimento do jogo, estratégias, build e dicas
-
-    ## Regras
-    - Se você não sabe a resposta, responda com 'Não sei' e não tente inventar uma resposta.
-    - Se a pergunta não está relacionada ao jogo, responda com 'Essa pergunta não está relacionada ao jogo'
-    - Considere a data atual ${new Date().toLocaleDateString()}
-    - Faça pesquisas atualizadas sobre o patch atual, baseado na data atual, para dar uma resposta coerente.
-    - Nunca responda itens que vc não tenha certeza de que existe no patch atual.
-
-    ## Resposta
-    - Economize na resposta, seja direto e responda no máximo 500 caracteres
-    - Responda em markdown
-    - Não precisa fazer nenhuma saudação ou despedida, apenas responda o que o usuário está querendo.
-
-    ## Exemplo de resposta
-    pergunta do usuário: Melhor build rengar jungle
-    resposta: A build mais atual é: \n\n **Itens:**\n\n coloque os itens aqui.\n\n**Runas:**\n\nexemplo de runas\n\n
-
-    ---
-    Aqui está a pergunta do usuário: ${question}`;
+  // Cria o prompt baseado no jogo escolhido.
+  // Ele inclui instruções sobre como a IA deve se comportar e a pergunta do usuário e sobre o jogo escolhido.
+  const pergunta = generatePromptPerGame(game, question);
 
   // Prepara os dados a serem enviados para a API.
   const contents = [
