@@ -16,7 +16,7 @@ const markDownToHtml = (text) => {
 const generatePromptPerGame = (game, question) => {
   const currentdate = new Date().toLocaleDateString();
 
-  switch (game.toLowerCase) {
+  switch (game.toLowerCase()) {
     case "valorant":
       return `
       ## Especialidade
@@ -110,7 +110,7 @@ const generatePromptPerGame = (game, question) => {
 
 8; // Esta é uma função assíncrona que envia a pergunta do usuário para a API do Gemini.
 const perguntarAI = async (question, game, apiKey) => {
-  const model = "gemini-2.0-flash";
+  const model = "gemini-2.5-flash";
   const geminiURL = `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${apiKey}`;
 
   // Cria o prompt baseado no jogo escolhido.
